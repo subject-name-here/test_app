@@ -26,11 +26,15 @@ class MainActivity : AppCompatActivity() {
 
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 0)
 
-        start = findViewById(R.id.start)
-        stop = findViewById(R.id.stop)
-        play = findViewById(R.id.play)
-
         output = File(filesDir,"record")
+
+        start = findViewById(R.id.start)
+        start.isEnabled = true
+        stop = findViewById(R.id.stop)
+        stop.isEnabled = false
+        play = findViewById(R.id.play)
+        play.isEnabled = output.exists()
+
         output.createNewFile()
 
         start.setOnClickListener { view: View? ->
@@ -54,26 +58,9 @@ class MainActivity : AppCompatActivity() {
             start.isEnabled = true
             stop.isEnabled = false
             play.isEnabled = true
-
-            //println(output.length())
         }
 
         play.setOnClickListener { view: View? ->
-            /*if (!player.isPlaying) {
-                player.setDataSource(output.absolutePath)
-                player.prepare()
-                player.start()
-                val thread = Thread {
-                    while (player.isPlaying) {
-                    }
-                    println("finished playing")
-                    player.reset()
-                }
-
-                thread.start()
-
-            }*/
-
             player.setDataSource(output.absolutePath)
             player.prepare()
             player.start()
