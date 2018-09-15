@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.view.View
 import android.widget.Button
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
             recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT)
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
-            recorder.setOutputFile(output.path)
+            recorder.setOutputFile(output.absolutePath)
 
             recorder.prepare()
             recorder.start()
@@ -58,13 +59,24 @@ class MainActivity : AppCompatActivity() {
             start.isEnabled = true
             stop.isEnabled = false
             play.isEnabled = true
+
+            println(output.absolutePath)
         }
 
         play.setOnClickListener { view: View? ->
-            player.setDataSource(output.absolutePath)
-            player.prepare()
-            player.start()
-            player.reset()
+            if (!player.isPlaying) {
+                player.setDataSource(output.absolutePath)
+                player.prepare()
+                player.start()
+                val thread = Thread {
+                    while (player.isPlaying) {}
+                    println("finished playing")
+                    player.reset()
+                }
+                thread.start()
+            } else {
+                player.stop()
+            }
         }
     }
 

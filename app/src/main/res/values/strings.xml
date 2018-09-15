@@ -2,5 +2,5 @@
     <string name="app_name">soundgarden</string>
     <string name="start_recording">Start recording</string>
     <string name="stop">Stop</string>
-    <string name="play_record">Play record</string>
+    <string name="play_stop_record">Play/stop record</string>
 </resources>
